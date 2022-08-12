@@ -29,16 +29,41 @@ Note:
 - Although you may change the contexts where apps are deployed as describe above, the Gloo Mesh and Istio cluster names will remain stable references (i.e. `mgmt`, `cluster1`, and `cluster2`)
 
 # App of Apps Explained
-Platform owners control the deployment of applications into the cluster with the app-of-apps pattern. The app-of-apps pattern uses a generic Argo Application to sync all manifests in a particular Git directory, rather than directly point to a Kustomize, YAML, or Helm configuration.
-
-By using the app-of-app pattern, a Platform Administrator can provide some self-service capabilities to end users by delivering a synced directory in Git (i.e. infra team controls `infra` repo/directory, app team to `app` repo/directory) while still controlling what is ultimately deployed to the cluster and exposed through standard Kubernetes RBAC and Policy. This way, with the right policy in place, Applications are not deployed unless successfully committed Git and pushed to the correctly scoped team repo/directory
+The app-of-apps pattern uses a generic Argo Application to sync all manifests in a particular Git directory, rather than directly point to a Kustomize, YAML, or Helm configuration. Anything pushed into the `environment/<overlay>/active` directory is deployed by it's corresponding app-of-app
 ```
-platform-owners
-└── mgmt
-    ├── mgmt-apps.yaml                      # syncs all apps pushed to environments/mgmt/apps/
-    ├── mgmt-cluster-config.yaml            # syncs all apps pushed to environments/mgmt/cluster-config/
-    ├── mgmt-infra.yaml                     # syncs all apps pushed to environments/mgmt/infra/
-    └── mgmt-mesh-config.yaml               # syncs all apps pushed to environments/mgmt/mesh-config/
+environment
+├── cluster-config
+│   ├── active
+│   │   ├── cert-manager-cacerts.yaml
+│   │   ├── cert-manager-ns.yaml
+│   │   ├── cert-manager.yaml
+│   │   ├── gloo-mesh-ns.yaml
+│   │   ├── relay-identity-token-secret.yaml
+│   │   └── relay-root-ca.yaml
+│   └── cluster-config-aoa.yaml
+├── infra
+│   ├── active
+│   │   ├── agent-cert.yaml
+│   │   ├── clusterissuer.yaml
+│   │   ├── gloo-mesh-cert.yaml
+│   │   ├── gloo-mesh-ee-helm-disableca.yaml
+│   │   ├── issuer.yaml
+│   │   └── relay-tls-signing-cert.yaml
+│   └── infra-aoa.yaml
+└── mesh-config
+    ├── active
+    │   ├── catchall-workspace.yaml
+    │   ├── catchall-workspacesettings.yaml
+    │   ├── gloo-mesh-cluster1-kubernetescluster.yaml
+    │   ├── gloo-mesh-cluster1-virtualgateway-443.yaml
+    │   ├── gloo-mesh-cluster1-virtualgateway-80.yaml
+    │   ├── gloo-mesh-cluster2-kubernetescluster.yaml
+    │   ├── gloo-mesh-global-workspacesettings.yaml
+    │   ├── httpbin-rt-443-vd.yaml
+    │   ├── httpbin-rt-80.yaml
+    │   ├── httpbin-virtualdestination.yaml
+    │   └── roottrustpolicy.yaml
+    ├── mesh-config-aoa.yaml
 ```
 
 # forking this repo
