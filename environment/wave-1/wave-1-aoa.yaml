@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: meta-mgmt-infra
+  name: wave-1-aoa
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -9,8 +9,8 @@ spec:
   project: default
   source:
     repoURL: https://github.com/ably77/aoa-mgmt/
-    targetRevision: license-2.1.x
-    path: environment/infra/active/
+    targetRevision: 2.1.x-waves
+    path: environment/wave-1/active/
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

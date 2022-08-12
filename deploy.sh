@@ -7,8 +7,7 @@
 # please use `kubectl config rename-contexts <current_context> <target_context>` to
 # rename your context if necessary
 cluster_context="mgmt"
-# comma separated list
-environment_overlays="cluster-config,infra,mesh-config"
+wave_overlays="3"
 LICENSE_KEY="$1"
 
 # check to see if defined contexts exist
@@ -60,9 +59,9 @@ cd ..
 # wait for argo cluster rollout
 ./tools/wait-for-rollout.sh deployment argocd-server argocd 20 ${cluster_context}
 
-# deploy app of apps
-for i in $(echo ${environment_overlays} | sed "s/,/ /g"); do
-  kubectl apply -f environment/${i}/${i}-aoa.yaml --context ${cluster_context}
+# deploy app of app waves
+for i in {1..${wave_overlays}}; do
+  kubectl apply -f environment/wave-${i}/wave-${i}-aoa.yaml --context ${cluster_context}
   sleep 20
 done
 
