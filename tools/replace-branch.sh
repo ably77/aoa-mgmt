@@ -2,8 +2,8 @@
 #!/bin/bash
 current_branch=''$1''
 target_branch=''$2''
-# comma separated list
-environment_overlays="cluster-config,infra,mesh-config"
+# number of app waves in the environments directory
+environment_waves="3"
 
 # check to see if current branch variable was passed through, if not prompt for it
 if [[ ${current_branch} == "" ]]
@@ -22,6 +22,6 @@ if [[ ${target_branch} == "" ]]
 fi
 
 # sed commands to replace target_branch variable
-for i in $(echo ${environment_overlays} | sed "s/,/ /g"); do
-  sed -i '' -e 's/'${current_branch}'/'${target_branch}'/g' ../environment/${i}/${i}-aoa.yaml
+for i in $(seq ${environment_waves}); do 
+  sed -i '' -e 's/'${current_branch}'/'${target_branch}'/g' ../environment/wave-${i}/wave-${i}-aoa.yaml; 
 done

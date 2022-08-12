@@ -7,6 +7,7 @@
 # please use `kubectl config rename-contexts <current_context> <target_context>` to
 # rename your context if necessary
 cluster_context="mgmt"
+# number of app waves in the environments directory
 environment_waves="3"
 LICENSE_KEY="$1"
 
@@ -51,13 +52,13 @@ metadata:
 type: Opaque
 EOF
 
-## install argocd
-#cd bootstrap-argocd
-#./install-argocd.sh insecure-rootpath ${cluster_context}
-#cd ..
-#
-## wait for argo cluster rollout
-#./tools/wait-for-rollout.sh deployment argocd-server argocd 20 ${cluster_context}
+# install argocd
+cd bootstrap-argocd
+./install-argocd.sh insecure-rootpath ${cluster_context}
+cd ..
+
+# wait for argo cluster rollout
+./tools/wait-for-rollout.sh deployment argocd-server argocd 20 ${cluster_context}
 
 # deploy app of app waves
 for i in $(seq ${environment_waves}); do 

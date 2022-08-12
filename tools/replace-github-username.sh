@@ -1,8 +1,8 @@
 # tested on macos
 #!/bin/bash
 github_username=''$1''
-# comma separated list
-environment_overlays="cluster-config,infra,mesh-config"
+# number of app waves in the environments directory
+environment_waves="3"
 
 # check to see if github username variable was passed through, if not prompt for key
 if [[ ${github_username} == "" ]]
@@ -13,6 +13,6 @@ if [[ ${github_username} == "" ]]
 fi
 
 # sed commands to replace target_branch variable
-for i in $(echo ${environment_overlays} | sed "s/,/ /g"); do
-  sed -i '' -e 's/ably77/'${github_username}'/g' ../environment/${i}/${i}-aoa.yaml
+for i in $(seq ${environment_waves}); do 
+  sed -i '' -e 's/ably77/'${github_username}'/g' ../environment/wave-${i}/wave-${i}-aoa.yaml; 
 done

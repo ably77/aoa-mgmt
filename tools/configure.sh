@@ -1,10 +1,10 @@
 #!/bin/bash
 #set -e
 
-# comma separated list
-environment_overlays="cluster-config,infra,mesh-config"
+# number of app waves in the environments directory
+environment_waves="3"
 
-# sed commands to replace target_branch variable
-for i in $(echo ${environment_overlays} | sed "s/,/ /g"); do
-  kubectl apply -f ../environment/${i}/${i}-aoa.yaml
+# configure
+for i in $(seq ${environment_waves}); do 
+  kubectl apply -f environment/wave-${i}/wave-${i}-aoa.yaml;
 done
