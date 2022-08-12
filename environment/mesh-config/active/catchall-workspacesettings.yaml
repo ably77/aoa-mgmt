@@ -15,6 +15,7 @@ spec:
       enabled: true
       hostSuffix: global
       serviceSelector:
+      # specify workloads so that serviceentries are not created for everything
       - workspace: wildcard
-        #labels: 
-        #  app: in-mesh
+        labels: 
+          app: in-mesh
