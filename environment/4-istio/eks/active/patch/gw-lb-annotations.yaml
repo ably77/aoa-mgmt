@@ -1,0 +1,74 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: istio-ingressgateway
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-gateways
+  project: default
+  source:
+    chart: gateway
+    repoURL: https://istio-release.storage.googleapis.com/charts
+    targetRevision: 1.15.3
+    helm:
+      values: |
+        # Name allows overriding the release name. Generally this should not be set
+        name: "istio-ingressgateway-1-15"
+        # revision declares which revision this gateway is a part of
+        revision: "1-15"
+        
+        replicaCount: 1
+        
+        service:
+          # Type of service. Set to "None" to disable the service entirely
+          type: LoadBalancer
+          ports:
+          - name: http2
+            port: 80
+            protocol: TCP
+            targetPort: 80
+          - name: https
+            port: 443
+            protocol: TCP
+            targetPort: 443
+          annotations: {}
+            meta.helm.sh/release-name: istio-ingressgateway
+            meta.helm.sh/release-namespace: istio-gateways
+            # uncomment below if using NLB controller
+            #service.beta.kubernetes.io/aws-load-balancer-backend-protocol: TCP
+            #service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: "2"
+            #service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: "10"
+            #service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "15021"
+            #service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: tcp
+            #service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: "2"
+            #service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+            #service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+            #service.beta.kubernetes.io/aws-load-balancer-type: nlb-ip
+            # uncomment below if using classic LB controller
+            service.beta.kubernetes.io/aws-load-balancer-type: external
+            service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+            service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+          loadBalancerIP: ""
+          loadBalancerSourceRanges: []
+          externalTrafficPolicy: ""
+        
+        # Pod environment variables
+        env: {}
+
+        annotations:
+          proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+        
+        # Labels to apply to all resources
+        labels:
+          istio.io/rev: 1-15
+          istio: ingressgateway
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
