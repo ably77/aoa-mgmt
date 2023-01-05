@@ -37,7 +37,7 @@ spec:
             port: 443
             protocol: TCP
             targetPort: 443
-          annotations: {}
+          annotations:
             meta.helm.sh/release-name: istio-ingressgateway
             meta.helm.sh/release-namespace: istio-gateways
             # uncomment below if using NLB controller
