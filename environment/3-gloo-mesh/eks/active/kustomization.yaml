@@ -7,7 +7,7 @@ resources:
 - ../../base/active/
 
 patchesStrategicMerge:
-- gloo-mesh-addons.yaml
-- gloo-mesh-agent.yaml
-- gloo-mesh-crds.yaml
-- gloo-mesh-ee-helm.yaml
+- patch/gloo-mesh-addons.yaml
+- patch/gloo-mesh-agent.yaml
+- patch/gloo-mesh-crds.yaml
+- patch/gloo-mesh-ee-helm.yaml
