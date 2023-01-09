@@ -4,6 +4,8 @@ kind: Kustomization
 
 # list of resources to be Applied
 resources:
-- httpbin-team-config-ns.yaml
-- httpbin-workspace.yaml
-- httpbin-workspacesettings.yaml
+- cloudprovider.yaml
+- cloudresources.yaml
+- lambda-workspace.yaml
+- lambda-workspacesettings.yaml
+- rt.yaml

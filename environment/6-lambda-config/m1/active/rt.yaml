@@ -1,0 +1,56 @@
+---
+apiVersion: networking.gloo.solo.io/v2
+kind: RouteTable
+metadata:
+  name: app
+  namespace: lambda
+spec:
+  http:
+  - forwardTo:
+      destinations:
+      - function:
+          logicalName: gloo-platform-lambda-demo-latest
+        kind: CLOUD_PROVIDER
+        ref:
+          cluster: mgmt
+          name: aws-provider
+          namespace: devops
+    labels:
+      route: lambda
+    name: lambda
+---
+apiVersion: networking.gloo.solo.io/v2
+kind: RouteTable
+metadata:
+  name: sanity
+  namespace: istio-gateways
+spec:
+  hosts:
+  - '*'
+  http:
+  - directResponse:
+      body: it's alive
+      status: 200
+    labels:
+      route: sanity
+    matchers:
+    - uri:
+        prefix: /sanity
+    name: sanity
+  - delegate:
+      allowedRoutes:
+        cloudProvider:
+          aws:
+            iamRoles:
+            - gloo-lambda-executor
+            - .*
+      routeTables:
+      - workspace: app
+    matchers:
+    - uri:
+        prefix: /lambda
+    name: lambda
+  virtualGateways:
+  - cluster: mgmt
+    name: mgmt-north-south-gw-443
+    namespace: istio-gateways

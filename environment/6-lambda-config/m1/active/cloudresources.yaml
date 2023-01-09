@@ -1,0 +1,11 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: CloudResources
+metadata:
+  name: aws-resources
+  namespace: lambda
+spec:
+  lambda:
+  - lambdaFunctionName: gloo-platform-lambda-demo
+    logicalName: gloo-platform-lambda-demo-latest
+    qualifier: $LATEST
+  provider: aws-provider

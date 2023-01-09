@@ -1,15 +1,10 @@
 apiVersion: admin.gloo.solo.io/v2
 kind: Workspace
 metadata:
-  name: httpbin
+  name: lambda
   namespace: gloo-mesh
-  labels:
-    allow_ingress: "true"
 spec:
   workloadClusters:
-  - name: 'mgmt'
-    namespaces:
-    - name: httpbin-team-config
   - name: '*'
     namespaces:
-    - name: httpbin
+    - name: lambda

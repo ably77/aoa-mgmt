@@ -1,0 +1,12 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: CloudProvider
+metadata:
+  name: aws-provider
+  namespace: lambda
+spec:
+  aws:
+    accountId: "0000000000"
+    lambda:
+      invokeRoleName: gloo-lambda-executor
+    region: us-west-2
+    stsEndpoint: sts.amazonaws.com
