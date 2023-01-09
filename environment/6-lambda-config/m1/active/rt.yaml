@@ -14,7 +14,7 @@ spec:
         ref:
           cluster: mgmt
           name: aws-provider
-          namespace: devops
+          namespace: lambda
     labels:
       route: lambda
     name: lambda
