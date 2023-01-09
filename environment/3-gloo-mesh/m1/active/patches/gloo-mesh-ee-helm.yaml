@@ -47,7 +47,7 @@ spec:
               # The URL that the UI for the OIDC app is available at, from the DNS and other ingress settings that expose the OIDC app UI service.
               appUrl: "https://gmui-local.glootest.com/gmui"
     repoURL: https://storage.googleapis.com/gloo-mesh-enterprise/gloo-mesh-enterprise
-    targetRevision: 2.1.2
+    targetRevision: 2.2.0-rc1
   syncPolicy:
     automated:
       prune: true
