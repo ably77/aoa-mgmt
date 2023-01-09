@@ -16,6 +16,10 @@ spec:
       namespace: istio-eastwest
     - kind: VIRTUAL_DESTINATION
       namespace: gloo-mesh-addons
+    - kind: CLOUD_PROVIDER
+      namespace: lambda
+    - kind: ROUTE_TABLE
+      namespace: lambda
   importFrom:
   - workspaces:
     - name: '*'
