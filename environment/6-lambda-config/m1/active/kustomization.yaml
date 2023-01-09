@@ -6,6 +6,7 @@ kind: Kustomization
 resources:
 - cloudprovider.yaml
 - cloudresources.yaml
+- lambda-ns.yaml
 - lambda-workspace.yaml
 - lambda-workspacesettings.yaml
 - rt.yaml
